@@ -52,7 +52,6 @@ Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/cmp-path'
 Plug 'hrsh7th/cmp-cmdline'
 Plug 'hrsh7th/nvim-cmp'
-Plug 'tzachar/cmp-tabnine', { 'do': './install.sh' }
 
 Plug 'phpactor/phpactor', {'for': 'php', 'branch': 'master', 'do': 'composer install --no-dev -o'}
 
@@ -215,7 +214,6 @@ cmp.setup({
       {name = 'path'},
       {name = 'nvim_lsp', keyword_length = 2},
       {name = 'buffer', keyword_length = 3},
-      {name = 'cmp_tabnine', keyword_length = 0 },
       {name = 'snippy' },
     },
     window = {
@@ -347,22 +345,6 @@ lua <<EOF
       -- Automatically install missing parsers when entering buffer
       auto_install = true,
     }
-
-    local tabnine = require('cmp_tabnine.config')
-
-    tabnine.setup({
-        max_lines = 1000,
-        max_num_results = 20,
-        sort = true,
-        run_on_every_keystroke = true,
-        snippet_placeholder = '..',
-        ignored_file_types = {
-            -- default is not to ignore
-            -- uncomment to ignore in lua:
-            -- lua = true
-        },
-        show_prediction_strength = true
-    })
 EOF
 
 nnoremap <silent> <F5> :lua require('dap').toggle_breakpoint()<CR>
