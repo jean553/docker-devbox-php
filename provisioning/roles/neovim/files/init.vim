@@ -390,9 +390,11 @@ lua <<EOF
         request = 'launch',
         name = 'Listen for Xdebug',
         port = 9003,
-        host = '0.0.0.0',
+        host = 'localhost',
+-- UNCOMMENT ACCORDING TO YOUR NEED
+--        host = '0.0.0.0',
 --        pathMappings = { ['/vagrant'] = '/vagrant/'}
-        pathMappings = { ['/var/task'] = '/vagrant/'}
+--        pathMappings = { ['/var/task'] = '/vagrant/'}
 
 
       }
