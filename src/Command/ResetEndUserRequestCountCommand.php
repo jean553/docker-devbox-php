@@ -2,7 +2,6 @@
 
 namespace App\Command;
 
-use App\Entity\EndUser;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -16,8 +15,6 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 )]
 class ResetEndUserRequestCountCommand extends Command
 {
-    private const BATCH_SIZE = 100;
-
     public function __construct(
         private EntityManagerInterface $entityManager
     ) {
@@ -28,32 +25,17 @@ class ResetEndUserRequestCountCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
-        $repository = $this->entityManager->getRepository(EndUser::class);
-        $query = $repository->createQueryBuilder('e')
-            ->where('e.requestCountForToday != 0')
-            ->getQuery();
-
-        $totalCount = $query->getResult();
-        $io->progressStart(count($totalCount));
-
-        $batchSize = self::BATCH_SIZE;
-        $i = 0;
-
-        foreach ($query->toIterable() as $endUser) {
-            $endUser->setRequestCountForToday(0);
-
-            if (($i % $batchSize) === 0) {
-                $this->entityManager->flush();
-                $this->entityManager->clear();
-                $io->progressAdvance($batchSize);
-            }
-
-            ++$i;
-        }
-
-        $this->entityManager->flush();
-        $this->entityManager->clear();
-
+        $connection = $this->entityManager->getConnection();
+        
+        $io->progressStart();
+        
+        $sql = "UPDATE end_user SET request_count_for_today = 0 WHERE request_count_for_today != 0";
+        $stmt = $connection->prepare($sql);
+        $result = $stmt->executeStatement();
+        
+        $io->progressFinish();
+        
+        $io->success(sprintf('%d EndUser requestCountForToday values have been reset to 0.', $result));
         $io->progressFinish();
         $io->success('All EndUser requestCountForToday values have been reset to 0.');
 
