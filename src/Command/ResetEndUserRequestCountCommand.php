@@ -29,7 +29,7 @@ class ResetEndUserRequestCountCommand extends Command
         
         $io->progressStart();
         
-        $sql = "UPDATE end_user SET request_count_for_today = 0 WHERE request_count_for_today != 0";
+        $sql = "UPDATE end_user SET requests_count_for_today = 0 WHERE requests_count_for_today != 0";
         $stmt = $connection->prepare($sql);
         $result = $stmt->executeStatement();
         
@@ -37,7 +37,7 @@ class ResetEndUserRequestCountCommand extends Command
         
         $io->success(sprintf('%d EndUser requestCountForToday values have been reset to 0.', $result));
         $io->progressFinish();
-        $io->success('All EndUser requestCountForToday values have been reset to 0.');
+        $io->success('All EndUser requestsCountForToday values have been reset to 0.');
 
         return Command::SUCCESS;
     }
