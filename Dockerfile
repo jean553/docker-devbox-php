@@ -1,3 +1,14 @@
+# This Dockerfile creates a development environment for PHP 8.2 and Symfony projects
+# It does the following:
+# 1. Uses phusion/baseimage as the base image
+# 2. Sets up SSH access
+# 3. Creates a 'vagrant' user with sudo privileges
+# 4. Installs necessary packages including Python, Ansible, and PHP 8.2 with extensions
+# 5. Installs Composer and Symfony CLI
+# 6. Sets up Neovim with PHP autocompletion
+# 7. Installs Zsh and configures it
+# 8. Runs Ansible playbooks for additional setup
+
 # Re-use the phusion baseimage which runs an SSH server etc
 FROM phusion/baseimage:jammy-1.0.0
 
