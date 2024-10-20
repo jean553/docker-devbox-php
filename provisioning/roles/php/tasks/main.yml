@@ -3,9 +3,6 @@
   shell: creates=/usr/local/bin/composer
     curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-- name: install msgpack extension
-  command: pecl install msgpack
-
 - name: activate xdebug
   lineinfile:
     line: 'xdebug.mode=debug'
