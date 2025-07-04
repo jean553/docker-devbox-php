@@ -30,11 +30,13 @@
     pip:
       name: neovim
       executable: pip3
+      extra_args: --break-system-packages
 
   - name: Installing pynvim pip3 package
     pip:
       name: pynvim
       executable: pip3
+      extra_args: --break-system-packages
 
 # Copy the init file
   - name: copy init files in rc folder

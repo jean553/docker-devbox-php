@@ -10,7 +10,7 @@
 # 8. Runs Ansible playbooks for additional setup
 
 # Re-use the phusion baseimage which runs an SSH server etc
-FROM phusion/baseimage:jammy-1.0.0
+FROM phusion/baseimage:noble-1.0.2
 
 # Some definitions
 ENV SUDOFILE /etc/sudoers
@@ -71,26 +71,31 @@ RUN LC_ALL=C.UTF-8 add-apt-repository ppa:ondrej/php -y && \
     apt-get update && \
     apt-get install -y \
         unzip \
-        php8.2-cli \
-        php8.2-common \
-        php8.2-pgsql \
-        php8.2-curl \
-        php8.2-xml \
-        php8.2-zip \
-        php8.2-intl \
-        php8.2-bcmath \
-        php8.2-mbstring \
-        php8.2-xdebug \
+        php8.4-cli \
+        php8.4-common \
+        php8.4-pgsql \
+        php8.4-curl \
+        php8.4-xml \
+        php8.4-zip \
+        php8.4-intl \
+        php8.4-bcmath \
+        php8.4-mbstring \
+        php8.4-xdebug \
     && \
     apt-get clean && \
     # install ansible
-    python3 -m pip install --upgrade ansible setuptools && \
+    python3 -m pip install --upgrade ansible setuptools --break-system-packages && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
     # we put the 'last time apt-get update was run' file far in the past \
     # so that ansible can then re-run apt-get update \
     touch -t 197001010000 /var/lib/apt/periodic/update-success-stamp && \
     # fix the tty error on vagrant \
     sed -i '/tty/!s/mesg n/true/' /root/.profile
+
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x -o nodesource_setup.sh && \
+    sudo -E bash nodesource_setup.sh && \
+    apt-get update && \
+    apt-get install nodejs yarn
 
 COPY provisioning/ /provisioning
 RUN \
