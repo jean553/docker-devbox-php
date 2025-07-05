@@ -81,10 +81,11 @@ RUN LC_ALL=C.UTF-8 add-apt-repository ppa:ondrej/php -y && \
         php8.4-bcmath \
         php8.4-mbstring \
         php8.4-xdebug \
+        ansible \
     && \
     apt-get clean && \
-    # install ansible
-    python3 -m pip install --upgrade ansible setuptools --break-system-packages && \
+    # install ansible for vagrant user
+    # su - vagrant -c "python3 -m pip install --user --upgrade ansible setuptools" && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
     # we put the 'last time apt-get update was run' file far in the past \
     # so that ansible can then re-run apt-get update \
@@ -95,7 +96,7 @@ RUN LC_ALL=C.UTF-8 add-apt-repository ppa:ondrej/php -y && \
 RUN curl -fsSL https://deb.nodesource.com/setup_18.x -o nodesource_setup.sh && \
     sudo -E bash nodesource_setup.sh && \
     apt-get update && \
-    apt-get install nodejs yarn
+    apt-get install -y nodejs yarn
 
 COPY provisioning/ /provisioning
 RUN \

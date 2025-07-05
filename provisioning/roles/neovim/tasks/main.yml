@@ -26,17 +26,21 @@
 
 # install deoplete
 
-  - name: Installing neovim pip3 package
-    pip:
-      name: neovim
-      executable: pip3
-      extra_args: --break-system-packages
+  #- name: Installing neovim pip3 package for vagrant user
+  #  pip:
+  #    name: neovim
+  #    executable: pip3
+  #    extra_args: --user
+  #  become: yes
+  #  become_user: vagrant
 
-  - name: Installing pynvim pip3 package
-    pip:
-      name: pynvim
-      executable: pip3
-      extra_args: --break-system-packages
+  #- name: Installing pynvim pip3 package for vagrant user
+  #  pip:
+  #    name: pynvim
+  #    executable: pip3
+  #    extra_args: --user
+  #  become: yes
+  #  become_user: vagrant
 
 # Copy the init file
   - name: copy init files in rc folder
