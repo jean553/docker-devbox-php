@@ -39,8 +39,6 @@ call plug#begin('~/.local/share/nvim/plugged')
 
 Plug 'nvim-neotest/nvim-nio'
 
-Plug 'folke/tokyonight.nvim', { 'branch': 'main' }
-
 Plug 'ntpeters/vim-better-whitespace'
 
 Plug 'dcampos/nvim-snippy'
@@ -65,14 +63,11 @@ Plug 'mfussenegger/nvim-dap'
 Plug 'rcarriga/nvim-dap-ui'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'theHamsta/nvim-dap-virtual-text'
-Plug 'codota/tabnine-nvim', { 'do': './dl_binaries.sh' }
 Plug 'andymass/vim-matchup'
 
 
 " Initialize plugin system
 call plug#end()
-
-colorscheme tokyonight
 
 " to easily switch from a split containing a terminal to an other split
 " see https://medium.com/@garoth/neovim-terminal-usecases-tricks-8961e5ac19b9
@@ -425,16 +420,6 @@ lua <<EOF
         enable = true,              -- mandatory, false will disable the whole extension
       },
     }
-
-    require('tabnine').setup({
-      disable_auto_comment=true,
-      accept_keymap="<Tab>",
-      dismiss_keymap = "<C-]>",
-      debounce_ms = 800,
-      suggestion_color = {gui = "#808080", cterm = 244},
-      exclude_filetypes = {"TelescopePrompt", "NvimTree"},
-      log_file_path = nil, -- absolute path to Tabnine log file
-    })
 EOF
 
 nnoremap <silent> <F5> :lua require('dap').toggle_breakpoint()<CR>
