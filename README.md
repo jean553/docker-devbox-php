@@ -1,36 +1,28 @@
-## Devbox for Symfony and PHP8 projects using docker
+# Docker PHP devbox
 
-### What you will get at the end
+ * PHP 8.4
+ * neovim with PHP edition tools
+ * xdebug.ini file
 
-* a Docker container in which you can SSH in
-* PHP8.1 installed, with `composer` and `symfony` (PHP7 is on older tag)
-* (optional) Neovim: same as vim but better, with php autocompletion
-* (optional) Zsh: with my zshrc (that you can replace by yours
+## Build the container
 
-### Requirements
-
-* Docker
-* Docker [buildx](https://github.com/docker/buildx)
-
-### Creation
-
-```bash
-./create_docker.sh
+```sh
+docker build -t jean553/docker-devbox-php .
 ```
 
-### Usage
+## Vagrant usage
 
-### Extensive list of stuff installed
+```ruby
+...
 
-TODO
+config.vm.define "dev", primary: true do |app|
 
-#### ZSH
+  app.vm.provider "docker" do |d|
+    d.force_host_vm = false
+    d.image = "jean553/docker-devbox-php"
+    d.name = "#{PROJECT}_dev"
+    d.has_ssh = true
+  end
 
-##### aliases
-
-```
-alias gs="git status"
-alias gm="git checkout master"
-alias gp="git pull origin"
-alias ga="git commit --amend"
+  ...
 ```
