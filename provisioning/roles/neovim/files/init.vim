@@ -42,6 +42,7 @@ Plug 'nvim-neotest/nvim-nio'
 Plug 'ntpeters/vim-better-whitespace'
 
 Plug 'dcampos/nvim-snippy'
+Plug 'folke/tokyonight.nvim', { 'branch': 'main' }
 Plug 'dcampos/cmp-snippy'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.0' }
@@ -68,6 +69,8 @@ Plug 'andymass/vim-matchup'
 
 " Initialize plugin system
 call plug#end()
+
+colorscheme tokyonight
 
 " to easily switch from a split containing a terminal to an other split
 " see https://medium.com/@garoth/neovim-terminal-usecases-tricks-8961e5ac19b9
