@@ -99,9 +99,11 @@ RUN \
     chown -R vagrant /home/vagrant
 
 # install claudecode
+USER vagrant
 RUN curl -fsSL https://claude.ai/install.sh -o /tmp/claude.sh && \
     chmod u+x /tmp/claude.sh && \
     ./tmp/claude.sh
+USER root
 
 RUN \
     # clean
