@@ -3,6 +3,7 @@
  * PHP 8.4
  * neovim with PHP edition tools
  * xdebug.ini file
+ * claude code
 
 ## Build the container
 
