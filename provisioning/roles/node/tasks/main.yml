@@ -9,15 +9,14 @@
     repo: deb http://dl.yarnpkg.com/debian/ stable main
     state: present
 
-- name: add nodesource repo's key
-  apt_key:
-    url: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
-    state: present
+- name: download nodejs repository configuration tool
+  get_url:
+    url:  https://deb.nodesource.com/setup_25.x
+    dest: /tmp/nodesource_setup.sh
+    mode: '0755' # anyone can execute
 
-- name: put nodesource repository
-  apt_repository:
-    repo: 'deb https://deb.nodesource.com/node_18.x {{ ansible_distribution_release }} main'
-    state: present
+- name: configure nodejs repository
+  shell: /tmp/nodesource_setup.sh
 
 - name: install nodejs and npm from repo
   apt: name="{{ item }}"
