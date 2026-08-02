@@ -136,13 +136,7 @@ local lsp_defaults = {
     vim.api.nvim_exec_autocmds('User', {pattern = 'LspAttached'})
   end
 }
-local lspconfig = require('lspconfig')
-
-lspconfig.util.default_config = vim.tbl_deep_extend(
-  'force',
-  lspconfig.util.default_config,
-  lsp_defaults
-)
+vim.lsp.config('*', lsp_defaults)
 
 vim.api.nvim_create_autocmd('User', {
   pattern = 'LspAttached',
@@ -189,16 +183,14 @@ vim.api.nvim_create_autocmd('User', {
   end
 })
 
-lspconfig.phpactor.setup{
+vim.lsp.config('phpactor', {
     cmd = {'/home/vagrant/.local/share/nvim/plugged/phpactor/bin/phpactor', 'language-server'},
-    on_attach = function(client, bufnr)
-      lspconfig.util.default_config.on_attach(client, bufnr)
-    end,
     init_options = {
         ["language_server_phpstan.enabled"] = true,
         ["language_server_psalm.enabled"] = false,
     }
-}
+})
+vim.lsp.enable('phpactor')
 
 vim.opt.completeopt = {'menu', 'menuone', 'noselect'}
 
