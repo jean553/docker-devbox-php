@@ -1,6 +1,6 @@
 # Docker PHP devbox
 
- * PHP 8.4
+ * PHP 8.5
  * neovim with PHP edition tools
  * xdebug.ini file
  * claude code
