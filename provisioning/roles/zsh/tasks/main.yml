@@ -4,6 +4,7 @@
 
 - name: copy config files in rc folder
   copy: src=.zshrc dest={{ home }}/.zshrc
+  become_user: ubuntu
 
 - name: change login shell to zsh
   user: name={{ username }} shell=/usr/bin/zsh

@@ -1,13 +1,8 @@
 ---
-- name: add yarn repo's key
-  apt_key:
-    url: https://dl.yarnpkg.com/debian/pubkey.gpg
-    state: present
 
-- name: put yarn repository
-  apt_repository:
-    repo: deb http://dl.yarnpkg.com/debian/ stable main
-    state: present
+# installing Node/npm is required for the neovim Ansible role,
+# in order to install and build vscode-php-debug,
+# for the PHP debugger
 
 - name: download nodejs repository configuration tool
   get_url:
@@ -24,4 +19,3 @@
     update_cache='yes'
   with_items:
     - nodejs
-    - yarn
