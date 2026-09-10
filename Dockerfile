@@ -1,16 +1,5 @@
-# This Dockerfile creates a development environment for PHP 8.2 and Symfony projects
-# It does the following:
-# 1. Uses phusion/baseimage as the base image
-# 2. Sets up SSH access
-# 3. Creates a 'vagrant' user with sudo privileges
-# 4. Installs necessary packages including Python, Ansible, and PHP 8.2 with extensions
-# 5. Installs Composer and Symfony CLI
-# 6. Sets up Neovim with PHP autocompletion
-# 7. Installs Zsh and configures it
-# 8. Runs Ansible playbooks for additional setup
-
 # Re-use the phusion baseimage which runs an SSH server etc
-FROM phusion/baseimage:jammy-1.0.0
+FROM phusion/baseimage:resolute
 
 # Some definitions
 ENV SUDOFILE /etc/sudoers
@@ -67,30 +56,28 @@ RUN \
     echo '%sudo   ALL=(ALL:ALL) NOPASSWD: ALL' >> ${SUDOFILE} && \
     chmod u-w ${SUDOFILE}
 
-RUN LC_ALL=C.UTF-8 add-apt-repository ppa:ondrej/php -y && \
-    apt-get update && \
-    apt-get install -y \
+RUN apt update && \
+    apt install -y \
         unzip \
-        php8.4-cli \
-        php8.4-common \
-        php8.4-pgsql \
-        php8.4-curl \
-        php8.4-xml \
-        php8.4-zip \
-        php8.4-intl \
-        php8.4-bcmath \
-        php8.4-mbstring \
-        php8.4-xdebug \
+        php8.5-cli \
+        php8.5-common \
+        php8.5-pgsql \
+        php8.5-curl \
+        php8.5-xml \
+        php8.5-zip \
+        php8.5-intl \
+        php8.5-bcmath \
+        php8.5-mbstring \
+        php8.5-xdebug \
     && \
-    apt-get clean && \
-    # install ansible
-    python3 -m pip install --upgrade ansible setuptools && \
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
-    # we put the 'last time apt-get update was run' file far in the past \
-    # so that ansible can then re-run apt-get update \
-    touch -t 197001010000 /var/lib/apt/periodic/update-success-stamp && \
-    # fix the tty error on vagrant \
-    sed -i '/tty/!s/mesg n/true/' /root/.profile
+    apt clean
+
+# install ansible
+# we use option "--break-system-packages" to allow system-wide installation,
+# working around the restriction of pip to install python packages into virtual environment,
+# this should not be done in prod, but this container is simply a dev container, no problem doing that...
+RUN python3 -m pip install --upgrade ansible setuptools --break-system-packages && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 COPY provisioning/ /provisioning
 RUN \
@@ -99,19 +86,24 @@ RUN \
     chown -R vagrant /home/vagrant
 
 # install claudecode
-USER vagrant
+USER ubuntu
 RUN curl -fsSL https://claude.ai/install.sh -o /tmp/claude.sh && \
     chmod u+x /tmp/claude.sh && \
     ./tmp/claude.sh
 USER root
 
-RUN \
-    # clean
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
-    # we put the 'last time apt-get update was run' file far in the past \
-    # so that ansible can then re-run apt-get update \
-    touch -t 197001010000 /var/lib/apt/periodic/update-success-stamp
+# clean
+RUN apt clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# on ubuntu "resolute" container, user with UID 1000 is "ubuntu"
+# and most of the time, user UID on the host will be 1000 as well;
+# so when creating the "vagrant" user, it takes the UID 1001 as 1000 is already used;
+#
+# when running "vagrant up" later, we prefer connect to the container with UID 1000 (ubuntu),
+# so that we directly have ownership and modification rights on the volume mounted files,
+# this requires to disable password on "ubuntu" user
+RUN passwd -d ubuntu
 
 ENTRYPOINT /change_user_uid.sh
 CMD ["/sbin/my_init"]

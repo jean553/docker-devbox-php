@@ -184,7 +184,7 @@ vim.api.nvim_create_autocmd('User', {
 })
 
 vim.lsp.config('phpactor', {
-    cmd = {'/home/vagrant/.local/share/nvim/plugged/phpactor/bin/phpactor', 'language-server'},
+    cmd = {'/home/ubuntu/.local/share/nvim/plugged/phpactor/bin/phpactor', 'language-server'},
     init_options = {
         ["language_server_phpstan.enabled"] = true,
         ["language_server_psalm.enabled"] = false,

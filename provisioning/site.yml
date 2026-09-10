@@ -2,13 +2,11 @@
 - hosts: localhost
   become: true
   vars:
-    username: 'vagrant'
+    username: 'ubuntu'
     home: '/home/{{ username }}'
   pre_tasks:
     - name: Install stuff from Aptitude
-      apt: name={{ item }} state=present
-        update_cache=yes
-        cache_valid_time=86400
+      apt: name={{ item }} state=present update_cache=yes
       with_items:
         - git
         - tig
