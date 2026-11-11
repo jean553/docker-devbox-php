@@ -90,6 +90,12 @@ USER ubuntu
 RUN curl -fsSL https://claude.ai/install.sh -o /tmp/claude.sh && \
     chmod u+x /tmp/claude.sh && \
     ./tmp/claude.sh
+
+# install opencode
+RUN curl -fsSL https://opencode.ai/v2/install -o /tmp/opencode.sh && \
+    chmod u+x /tmp/opencode.sh && \
+    ./tmp/opencode.sh && \
+    echo 'export PATH=/home/ubuntu/.opencode/bin:$PATH' >> /home/ubuntu/.zshrc
 USER root
 
 # clean
