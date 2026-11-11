@@ -25,5 +25,20 @@ config.vm.define "dev", primary: true do |app|
     d.has_ssh = true
   end
 
+  # additional configuration for default folder, claude and opencode
+  app.vm.provision :shell, privileged: false, env: app_vars,  :inline => <<-END
+    echo 'cd /vagrant' >> /home/ubuntu/.zshrc
+    echo "export PATH=/vagrant/bin:$PATH" >> /home/ubuntu/.zshrc
+    echo "export PATH=/home/ubuntu/.local/bin:$PATH" >> /home/ubuntu/.zshrc
+    echo "export PATH=/home/ubuntu/.opencode/bin:$PATH" >> /home/ubuntu/.zshrc
+  end
+
   ...
+```
+
+## Use Opencode
+
+```sh
+opencode2 auth login opencode
+opencode2
 ```
